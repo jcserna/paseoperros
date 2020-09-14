@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/principal.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="titulo_perros">
+        Paseando Perros - Listado
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel id="panelPerros" header="Listado perros - #{listaSEController.listaPerros.contarNodos()}">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Número"/>
+                    <p:outputLabel value="#{listaSEController.perroMostrar.numero}"/>
+                    <p:outputLabel value="Nombre"/>
+                    <p:outputLabel value="#{listaSEController.perroMostrar.nombre}"/>
+                    <p:outputLabel value="Edad"/>
+                    <p:outputLabel value="#{listaSEController.perroMostrar.edad}"/>
+                    <p:outputLabel value="Género"/>
+                    <p:outputLabel value="#{listaSEController.perroMostrar.genero}"/>
+                </p:panelGrid>
+                <p:panelGrid columns="3">
+                    <p:commandButton value="Primero" disabled="#{listaSEController.temp == listaSEController.listaPerros.cabeza}">
+                        <p:ajax listener="#{listaSEController.irPrimero()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Siguiente" disabled="#{listaSEController.temp.siguiente == null}" >
+                        <p:ajax listener="#{listaSEController.irSiguiente()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Último" disabled="#{listaSEController.temp.siguiente == null}">
+                        <p:ajax listener="#{listaSEController.irUltimo()}" update="panelPerros"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Invertir Lista">
+                        <p:ajax listener="#{listaSEController.invertir()}" update="panelPerros"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Intercambiar extremos">
+                        <p:ajax listener="#{listaSEController.intercambiar()}" update="panelPerros"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Eliminar">
+                        <p:ajax listener="#{listaSEController.eliminar(listaSEController.perroMostrar.numero)}" update="panelPerros"/>
+                    </p:commandButton>
+
+
+                    <p:spinner id="basic"  value="#{listaSEController.numero}" min="1" max="#{listaSEController.listaPerros.contarNodos()}" />
+
+
+                    <p:commandButton value="Submit" update="panelPerros"  />
+                    <h:outputText value="#{listaSEController.numero}" />
+
+
+                    <p:selectOneMenu id="console" value="#{selectOneMenuView.console}" style="width:125px">
+                        <f:selectItem itemLabel="Select One" itemValue="#{selectOneMenuView.console}" />
+                        <f:selectItem itemLabel="Macho" itemValue="macho" />
+                        <f:selectItem itemLabel="Hembra" itemValue="hembra" />
+                        <f:facet name="footer">
+                            <p:separator />
+                            <h:outputText value="3 consoles" style="font-weight:bold;"/>
+                        </f:facet>
+                    </p:selectOneMenu>
+
+
+                    <p:commandButton value="Buscar 1">
+                        <p:ajax listener="#{listaSEController.flitroGenero(selectOneMenuView.console)}" update="panelPerros"/>
+                    </p:commandButton>
+                </p:panelGrid> 
+            </p:panel>
+
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
